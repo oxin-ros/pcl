@@ -188,9 +188,15 @@ namespace pcl
       }
       else
       {
-        PCL_THROW_EXCEPTION(pcl::ComputeFailedException,
-                            "[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
-                            seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
+        std::ostringstream ss;
+        ss << "[pcl::extractEuclideanClusters] This cluster has " << seed_queue.size () <<
+              " points, which is not between " << min_pts_per_cluster << " and " <<
+              max_pts_per_cluster << " points, so it is not a final cluster\n";
+        PCL_DEBUG_STREAM(ss.str ());
+        if(seed_queue.size () > max_pts_per_cluster)
+        {
+          PCL_THROW_EXCEPTION(pcl::ComputeFailedException, ss.str ());
+        }
       }
     }
   }
@@ -309,9 +315,15 @@ namespace pcl
       }
       else
       {
-        PCL_THROW_EXCEPTION(pcl::ComputeFailedException,
-                            "[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
-                            seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
+        std::ostringstream ss;
+        ss << "[pcl::extractEuclideanClusters] This cluster has " << seed_queue.size () <<
+              " points, which is not between " << min_pts_per_cluster << " and " <<
+              max_pts_per_cluster << " points, so it is not a final cluster\n";
+        PCL_DEBUG_STREAM(ss.str ());
+        if(seed_queue.size () > max_pts_per_cluster)
+        {
+          PCL_THROW_EXCEPTION(pcl::ComputeFailedException, ss.str ());
+        }
       }
     }
   }
