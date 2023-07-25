@@ -181,12 +181,12 @@ pcl::gpu::extractEuclideanClusters(
       r.header = host_cloud_->header;
       clusters.push_back(r); // We could avoid a copy by working directly in the vector
     }
-    else if (found_points.size () > max_pts_per_cluster)
+    else if (found_points > max_pts_per_cluster)
     {
       std::ostringstream ss;
-      ss << "[pcl::extractEuclideanClusters] This cluster has " << found_points.size () <<
-            " points, which is not between " << min_pts_per_cluster << " and " <<
-            max_pts_per_cluster << " points, so it is not a final cluster\n";
+      ss << "[pcl::extractEuclideanClusters] This cluster has " << found_points <<
+            " points, which is larger than " << max_pts_per_cluster <<
+            " points, so it is not a final cluster\n";
       PCL_THROW_EXCEPTION(pcl::ComputeFailedException, ss.str ());
     }
   }
