@@ -58,7 +58,7 @@ namespace pcl
     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
     * \ingroup segmentation
     */
-  template <typename PointT> void 
+  template <typename PointT> void
   extractEuclideanClusters (
       const PointCloud<PointT> &cloud, const typename search::Search<PointT>::Ptr &tree,
       float tolerance, std::vector<PointIndices> &clusters,
@@ -76,7 +76,7 @@ namespace pcl
     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
     * \ingroup segmentation
     */
-  template <typename PointT> void 
+  template <typename PointT> void
   extractEuclideanClusters (
       const PointCloud<PointT> &cloud, const Indices &indices,
       const typename search::Search<PointT>::Ptr &tree, float tolerance, std::vector<PointIndices> &clusters,
@@ -86,7 +86,7 @@ namespace pcl
   /** \brief Decompose a region of space into clusters based on the euclidean distance between points, and the normal
     * angular deviation between points. Each point added to the cluster is origin to another radius search. Each point
     * within radius range will be compared to the origin in respect to normal angle and euclidean distance. If both
-    * are under their respective threshold the point will be added to the cluster. Generally speaking the cluster 
+    * are under their respective threshold the point will be added to the cluster. Generally speaking the cluster
     * algorithm will not stop on smooth surfaces but on surfaces with sharp edges.
     * \param cloud the point cloud message
     * \param normals the point cloud message containing normal information
@@ -99,7 +99,7 @@ namespace pcl
     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
     * \ingroup segmentation
     */
-  template <typename PointT, typename Normal> void 
+  template <typename PointT, typename Normal> void
   extractEuclideanClusters (
       const PointCloud<PointT> &cloud, const PointCloud<Normal> &normals,
       float tolerance, const typename KdTree<PointT>::Ptr &tree,
@@ -188,8 +188,9 @@ namespace pcl
       }
       else
       {
-        PCL_DEBUG("[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
-                  seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
+        PCL_THROW_EXCEPTION(pcl::ComputeFailedException,
+                            "[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
+                            seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
       }
     }
   }
@@ -199,7 +200,7 @@ namespace pcl
   /** \brief Decompose a region of space into clusters based on the euclidean distance between points, and the normal
     * angular deviation between points. Each point added to the cluster is origin to another radius search. Each point
     * within radius range will be compared to the origin in respect to normal angle and euclidean distance. If both
-    * are under their respective threshold the point will be added to the cluster. Generally speaking the cluster 
+    * are under their respective threshold the point will be added to the cluster. Generally speaking the cluster
     * algorithm will not stop on smooth surfaces but on surfaces with sharp edges.
     * \param cloud the point cloud message
     * \param normals the point cloud message containing normal information
@@ -213,7 +214,7 @@ namespace pcl
     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
     * \ingroup segmentation
     */
-  template <typename PointT, typename Normal> 
+  template <typename PointT, typename Normal>
   void extractEuclideanClusters (
       const PointCloud<PointT> &cloud, const PointCloud<Normal> &normals,
       const Indices &indices, const typename KdTree<PointT>::Ptr &tree,
@@ -308,8 +309,9 @@ namespace pcl
       }
       else
       {
-        PCL_DEBUG("[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
-                  seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
+        PCL_THROW_EXCEPTION(pcl::ComputeFailedException,
+                            "[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
+                            seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
       }
     }
   }
@@ -339,82 +341,82 @@ namespace pcl
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       /** \brief Empty constructor. */
-      EuclideanClusterExtraction () : tree_ (), 
+      EuclideanClusterExtraction () : tree_ (),
                                       cluster_tolerance_ (0),
-                                      min_pts_per_cluster_ (1), 
+                                      min_pts_per_cluster_ (1),
                                       max_pts_per_cluster_ (std::numeric_limits<pcl::uindex_t>::max ())
       {};
 
       /** \brief Provide a pointer to the search object.
         * \param[in] tree a pointer to the spatial search object.
         */
-      inline void 
-      setSearchMethod (const KdTreePtr &tree) 
-      { 
-        tree_ = tree; 
+      inline void
+      setSearchMethod (const KdTreePtr &tree)
+      {
+        tree_ = tree;
       }
 
-      /** \brief Get a pointer to the search method used. 
+      /** \brief Get a pointer to the search method used.
        *  @todo fix this for a generic search tree
        */
-      inline KdTreePtr 
-      getSearchMethod () const 
-      { 
-        return (tree_); 
+      inline KdTreePtr
+      getSearchMethod () const
+      {
+        return (tree_);
       }
 
       /** \brief Set the spatial cluster tolerance as a measure in the L2 Euclidean space
         * \param[in] tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space
         */
-      inline void 
-      setClusterTolerance (double tolerance) 
-      { 
-        cluster_tolerance_ = tolerance; 
+      inline void
+      setClusterTolerance (double tolerance)
+      {
+        cluster_tolerance_ = tolerance;
       }
 
       /** \brief Get the spatial cluster tolerance as a measure in the L2 Euclidean space. */
-      inline double 
-      getClusterTolerance () const 
-      { 
-        return (cluster_tolerance_); 
+      inline double
+      getClusterTolerance () const
+      {
+        return (cluster_tolerance_);
       }
 
       /** \brief Set the minimum number of points that a cluster needs to contain in order to be considered valid.
         * \param[in] min_cluster_size the minimum cluster size
         */
-      inline void 
+      inline void
       setMinClusterSize (pcl::uindex_t min_cluster_size)
-      { 
-        min_pts_per_cluster_ = min_cluster_size; 
+      {
+        min_pts_per_cluster_ = min_cluster_size;
       }
 
       /** \brief Get the minimum number of points that a cluster needs to contain in order to be considered valid. */
       inline pcl::uindex_t
-      getMinClusterSize () const 
-      { 
-        return (min_pts_per_cluster_); 
+      getMinClusterSize () const
+      {
+        return (min_pts_per_cluster_);
       }
 
       /** \brief Set the maximum number of points that a cluster needs to contain in order to be considered valid.
         * \param[in] max_cluster_size the maximum cluster size
         */
-      inline void 
+      inline void
       setMaxClusterSize (pcl::uindex_t max_cluster_size)
-      { 
-        max_pts_per_cluster_ = max_cluster_size; 
+      {
+        max_pts_per_cluster_ = max_cluster_size;
       }
 
       /** \brief Get the maximum number of points that a cluster needs to contain in order to be considered valid. */
       inline pcl::uindex_t
-      getMaxClusterSize () const 
-      { 
-        return (max_pts_per_cluster_); 
+      getMaxClusterSize () const
+      {
+        return (max_pts_per_cluster_);
       }
 
       /** \brief Cluster extraction in a PointCloud given by <setInputCloud (), setIndices ()>
         * \param[out] clusters the resultant point clusters
         */
-      void 
+      void
       extract (std::vector<PointIndices> &clusters);
 
     protected:
@@ -441,10 +443,10 @@ namespace pcl
 
   };
 
-  /** \brief Sort clusters method (for std::sort). 
+  /** \brief Sort clusters method (for std::sort).
     * \ingroup segmentation
     */
-  inline bool 
+  inline bool
   comparePointClusters (const pcl::PointIndices &a, const pcl::PointIndices &b)
   {
     return (a.indices.size () < b.indices.size ());

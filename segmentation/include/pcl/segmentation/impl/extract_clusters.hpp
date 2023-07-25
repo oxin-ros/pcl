@@ -115,8 +115,9 @@ pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud,
     }
     else
     {
-      PCL_DEBUG("[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
-                seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
+      PCL_THROW_EXCEPTION(pcl::ComputeFailedException,
+                          "[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
+                          seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
     }
   }
 }
@@ -214,8 +215,9 @@ pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud,
     }
     else
     {
-      PCL_DEBUG("[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
-                seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
+      PCL_THROW_EXCEPTION(pcl::ComputeFailedException,
+                          "[pcl::extractEuclideanClusters] This cluster has %zu points, which is not between %u and %u points, so it is not a final cluster\n",
+                          seed_queue.size (), min_pts_per_cluster, max_pts_per_cluster);
     }
   }
 }
@@ -224,10 +226,10 @@ pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud,
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename PointT> void 
+template <typename PointT> void
 pcl::EuclideanClusterExtraction<PointT>::extract (std::vector<PointIndices> &clusters)
 {
-  if (!initCompute () || 
+  if (!initCompute () ||
       (input_   && input_->points.empty ()) ||
       (indices_ && indices_->empty ()))
   {
