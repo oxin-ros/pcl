@@ -38,6 +38,7 @@
 #ifndef PCL_SEGMENTATION_IMPL_EXTRACT_CLUSTERS_H_
 #define PCL_SEGMENTATION_IMPL_EXTRACT_CLUSTERS_H_
 
+#include <pcl/exceptions.h> // for PCL_THROW_EXCEPTION, PCLException
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/search/organized.h> // for OrganizedNeighbor
 
